@@ -12,8 +12,8 @@ class OpenWeatherMapAPI {
 	}
 
 	/**
-	 * [get_cache description]
-	 * @return [type] [description]
+	 * Centralised method to get the cache for open weather map data
+	 * @return SS_Cache SilverStripe cache object
 	 */
 	private static function get_cache() {
 		$cache = SS_Cache::factory('openweathermap');
@@ -21,6 +21,12 @@ class OpenWeatherMapAPI {
 	}
 
 
+	/**
+	 * Obtain a JSON object utilising the API if needbe, but taking into account hit rates against
+	 * the API - documentation says not to repeat URLS more than every 10 mins
+	 * @param  [string] $url JSON service URL for the required data
+	 * @return {object}      Array or struct object decoded from returned or cached JSON data
+	 */
 	private static function cache_friendly_json_from_url($url) {
 		$cache = self::get_cache();
 		$cachekey = hash('ripemd160',$url);
@@ -35,7 +41,12 @@ class OpenWeatherMapAPI {
 		return json_decode($json);
 	}
 
-
+	/**
+	 * Forecasted weather data from a station of given OpenWeatherMap id
+	 * @param  integer $stationid OpenWeatherMap id of station
+	 * @param  integer numberOfDays Number of days to forecast, maximum of 16
+	 * @return struct Object decoded from JSON API representing forecasted weather
+	 */
 	public static function forecast($stationid, $numberOfDays) {
 		$url = "http://api.openweathermap.org/data/2.5/forecast?id={$stationid}&cnt={$numberOfDays}&units=metric";
 		// FIXME take account of the 3 hr refresh with forecasts here?
@@ -43,12 +54,24 @@ class OpenWeatherMapAPI {
 	}
 
 
+	/**
+	 * Current weather data from a station of given OpenWeatherMap id
+	 * @param  integer $stationid OpenWeatherMap id of station
+	 * @return struct Object decoded from JSON API representing current weather
+	 */
 	public static function current_weather($stationid) {
 		$url = "http://api.openweathermap.org/data/2.5/weather?id={$stationid}&units=metric";
 		return self::cache_friendly_json_from_url($url);
 	}
 
 
+	/**
+	 * Get a list of stations from the API near a given latitude/longitude
+	 * @param  float  $lat latitude of point being checked
+	 * @param  float  $lon longitude of point being checked
+	 * @param  integer $cnt number of stations to return, default 30
+	 * @return array array of station data
+	 */
 	public static function nearby_weather_stations($lat,$lon,$cnt = 30) {
 		$url = "http://api.openweathermap.org/data/2.5/station/find?lat={$lat}&lon={$lon}&cnt={$cnt}";
 		return self::cache_friendly_json_from_url($url);
