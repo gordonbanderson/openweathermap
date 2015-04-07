@@ -1,0 +1,57 @@
+<?php
+
+class OpenWeatherMapController extends Controller {
+	private static $allowed_actions = array('import_country');
+
+
+	public function import_country() {
+		$cityfile = BASE_PATH.'/openweathermap/bulk/city.list.json';
+		if (file_exists($cityfile)) {
+			$country = $this->request->param('ID');
+			echo "Importing stations for country ".$country."\n";
+			$checkstring = '"country":"'.$country.'"';
+			$file = fopen($cityfile, "r");
+			$ctr = 0;
+			while(!feof($file)){
+			    $line = fgets($file);
+			    if (strrpos($line, $checkstring) > 0) {
+			    	$ctr++;
+
+			    	// each line is information about the weather station in JSON format
+			    	$stationinfo = json_decode($line);
+
+			    	$id = $stationinfo->_id;
+			    	$name = $stationinfo->name;
+			    	$lat = $stationinfo->coord->lat;
+			    	$lon = $stationinfo->coord->lon;
+
+			    	// check for the station already existing or not
+			    	$stationct = OpenWeatherMapStation::get()->filter('OpenWeatherMapStationID', $id)->count();
+			    	if ($stationct == 0) {
+			    		$station = new OpenWeatherMapStation();
+			    		$station->OpenWeatherMapStationID = $id;
+			    		$station->Name = $name;
+			    		$station->Lat = $lat;
+			    		$station->Lon = $lon;
+			    		$station->Zoom = 17;
+			    		$station->Initialised = true;
+			    		$station->Country = $country;
+			    		$station->write();
+			    		echo "IMPORTED: {$id},{$name},{$lat},{$lon}\n";
+			    	} else {
+			    		echo "EXISTS: {$id},{$name},{$lat},{$lon}\n";
+			    	}
+			    }
+
+			}
+			fclose($file);
+
+		} else {
+			echo "The file <YOUR SITE ROOT>/openweathermap/bulk/city.list.json must exist\n";
+			echo "To create it execute the following in a console\n\n";
+			echo "cd /root/of/silverstripe-project/openweathermap/bulk\n";
+			echo "wget http://78.46.48.103/sample/city.list.json.gz\n";
+			echo "gunzip city.list.json.gz\n";
+		}
+	}
+}
