@@ -34,15 +34,21 @@ class OpenWeatherMapStation extends DataObject {
 		$ctr = 0;
 		$ctrmax = 8*$days;
 
-		// chart data - initially time and temperature
+		// chart data
 		$labels = array();
 		$temperaturedata = array();
+		$rainfalldata = array();
+		$humiditydata = array();
+		$cloudcoverdata = array();
 
 		foreach($list as $forecastdata) {
 			$fc = $this->json_weather_to_data_object($forecastdata);
 			if (isset($forecastdata->rain)) {
 				$fc->Rain3Hours = $forecastdata->rain->{'3h'};
+			} else {
+				$fc->Rain3Hours = 0;
 			}
+
 			$dt = $forecastdata->dt;
 			$ssdt = new SS_Datetime();
 			$ssdt->setValue($dt);
@@ -51,40 +57,56 @@ class OpenWeatherMapStation extends DataObject {
 			$q = '"';
 			array_push($labels, $q.$ssdt->Format('H:i').$q);
 			array_push($temperaturedata, $q.$fc->TemperatureCurrent.$q);
+			array_push($rainfalldata, $q.$fc->Rain3Hours.$q);
+			array_push($humiditydata, $q.$fc->Humidity.$q);
+			array_push($cloudcoverdata, $q.$fc->CloudCoverPercentage.$q);
+
+
 			$ctr++;
 			if ($ctr >= $ctrmax) {
 				break;
 			}
 		}
 
-		$vars = new ArrayData(array(
-			'Forecasts' => $result
-		));
 
 		$labelcsv = implode(',', $labels);
 		$temperaturecsv = implode(',', $temperaturedata);
+		$rainfallcsv = implode(',', $rainfalldata);
+		$cloudcovercsv = implode(',', $cloudcoverdata);
+		$humiditycsv = implode(',', $humiditydata);
+
 
 		// initialise variables for templates
 		$varsarray = array(
 			'Labels' => $labelcsv,
-			'Temperatures' => $temperaturecsv
+			'Temperatures' => $temperaturecsv,
+			'Rainfall' => $rainfallcsv,
+			'Humidity' => $humiditycsv,
+			'CloudCover' => $cloudcovercsv,
+			'Forecasts' => $result
 		);
+
+		$vars = new ArrayData($varsarray);
+
 
 		// get the temperature JavaScript from a template.  Override in your own theme as desired
 		$chartOptions = $vars->renderWith('ChartOptionsJS');
-		$varsarray['ChartOptions'] = $chartOptions;
-		$vars = new ArrayData($varsarray);
+		$vars->setField('ChartOptions', $chartOptions);
 
 		$temperatureJS = $vars->renderWith('TemperatureChartJS');
+		$rainfallJS = $vars->renderWith('RainfallChartJS');
+		$cloudhumidyJS = $vars->renderWith('CloudCoverHumidityChartJS');
 
 
 		Requirements::css('openweathermap/css/openweathermap.css');
 		Requirements::javascript('openweathermap/javascript/chart.min.js');
 		Requirements::customScript(<<<JS
 			$temperatureJS
+			$rainfallJS
+			$cloudhumidyJS
 JS
 );
-		return $vars->renderWith('ForecastPerThreeHours');
+		return $vars->renderWith('ForecastDetailed');
 	}
 
 
