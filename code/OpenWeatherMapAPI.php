@@ -44,12 +44,10 @@ class OpenWeatherMapAPI {
 	/**
 	 * Forecasted weather data from a station of given OpenWeatherMap id
 	 * @param  integer $stationid OpenWeatherMap id of station
-	 * @param  integer numberOfDays Number of days to forecast, maximum of 5
 	 * @return struct Object decoded from JSON API representing forecasted weather
 	 */
-	public static function detailed_forecast($stationid, $numberOfDays) {
-		$url = "http://api.openweathermap.org/data/2.5/forecast?id={$stationid}&cnt=";
-		$url .= "{$numberOfDays}&units=metric";
+	public static function detailed_forecast($stationid) {
+		$url = "http://api.openweathermap.org/data/2.5/forecast?id={$stationid}&units=metric";
 		// FIXME take account of the 3 hr refresh with forecasts here?
 		return self::cache_friendly_json_from_url($url);
 	}
