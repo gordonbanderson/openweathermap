@@ -5,6 +5,12 @@ class OpenWeatherMapController extends Controller {
 
 
 	public function import_country() {
+		// check access permissions, we don't want this to be public
+		$canAccess = ( Director::isDev() || Director::is_cli() || Permission::check( "ADMIN" ) );
+        if ( !$canAccess ) {
+        	return Security::permissionFailure( $this );
+        }
+
 		$cityfile = BASE_PATH.'/openweathermap/bulk/city.list.json';
 		if (file_exists($cityfile)) {
 			$country = $this->request->param('ID');
