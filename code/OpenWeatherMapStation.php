@@ -31,21 +31,67 @@ class OpenWeatherMapStation extends DataObject {
 		$forecasts = array();
 		$list = $forecast->list;
 		$result = new ArrayList();
+		$ctr = 0;
+		$ctrmax = 8*$days;
+
+		// chart data - initially time and temperature
+		$labels = array();
+		$temperaturedata = array();
+
 		foreach($list as $forecastdata) {
 			$fc = $this->json_weather_to_data_object($forecastdata);
 			if (isset($forecastdata->rain)) {
 				$fc->Rain3Hours = $forecastdata->rain->{'3h'};
 			}
-
-			$fc->DateTime = $forecastdata->dt_txt;
+			$dt = $forecastdata->dt;
+			$ssdt = new SS_Datetime();
+			$ssdt->setValue($dt);
+			$fc->DateTime = $ssdt;
 			$result->push($fc);
+			$q = '"';
+			array_push($labels, $q.$ssdt->Format('H:i').$q);
+			array_push($temperaturedata, $q.$fc->TemperatureCurrent.$q);
+			$ctr++;
+			if ($ctr >= $ctrmax) {
+				break;
+			}
 		}
-
 
 		$vars = new ArrayData(array(
 			'Forecasts' => $result
 		));
 
+		$labelcsv = implode(',', $labels);
+		$temperaturecsv = implode(',', $temperaturedata);
+
+		Requirements::css('openweathermap/css/openweathermap.css');
+		Requirements::javascript('openweathermap/javascript/chart.min.js');
+		Requirements::customScript(<<<JS
+			var ctx = document.getElementById("forecastChart").getContext("2d");
+			var data = {
+			    labels: [{$labelcsv}],
+			    datasets: [
+			        {
+			            label: "Temperature",
+			            fillColor: "rgba(220,220,220,0.2)",
+			            strokeColor: "rgba(220,220,220,1)",
+			            pointColor: "rgba(220,220,220,1)",
+			            pointStrokeColor: "#fff",
+			            pointHighlightFill: "#fff",
+			            pointHighlightStroke: "rgba(220,220,220,1)",
+			            data: [{$temperaturecsv}]
+			        }
+			    ]
+			};
+			var linechart = new Chart(ctx).Line(data,
+				{
+					showGridLines: true,
+					animation: false,
+					scaleLineWidth: 4,
+					responsive: true
+				});
+JS
+);
 		return $vars->renderWith('ForecastPerThreeHours');
 	}
 
@@ -68,8 +114,8 @@ class OpenWeatherMapStation extends DataObject {
 		$vars = new ArrayData(array(
 			'Forecasts' => $result
 		));
-
-		return $vars->renderWith('ForecastPerThreeHours');
+		Requirements::javascript('openweathermap/javascript/chart.min.js');
+		return $vars->renderWith('ForecastDaily');
 	}
 
 
