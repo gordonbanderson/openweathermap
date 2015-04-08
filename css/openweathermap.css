@@ -1,4 +1,25 @@
-#forecastChart {
+.weatherChart {
 	padding-right: 20px;
-	height: 200px;
 }
+
+table#upcomingWeather {
+	border: none;
+}
+
+#upcomingWeather .timeLabels td {
+	font-weight: normal;
+	font-size: 80%;
+	-ms-transform: rotate(-90deg); /* IE 9 */
+    -webkit-transform: rotate(-90deg); /* Chrome, Safari, Opera */
+    transform: rotate(-90deg);
+}
+
+table#upcomingWeather tr th, table#upcomingWeather tr td  {
+	padding: 0px;
+}
+
+
+table#upcomingWeather tr.even, table#upcomingWeather tr.alt, table#upcomingWeather tr:nth-of-type(even) {
+	background: none;
+}
+
