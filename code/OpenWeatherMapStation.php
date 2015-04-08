@@ -64,32 +64,24 @@ class OpenWeatherMapStation extends DataObject {
 		$labelcsv = implode(',', $labels);
 		$temperaturecsv = implode(',', $temperaturedata);
 
+		// initialise variables for templates
+		$varsarray = array(
+			'Labels' => $labelcsv,
+			'Temperatures' => $temperaturecsv
+		);
+
+		// get the temperature JavaScript from a template.  Override in your own theme as desired
+		$chartOptions = $vars->renderWith('ChartOptionsJS');
+		$varsarray['ChartOptions'] = $chartOptions;
+		$vars = new ArrayData($varsarray);
+
+		$temperatureJS = $vars->renderWith('TemperatureChartJS');
+
+
 		Requirements::css('openweathermap/css/openweathermap.css');
 		Requirements::javascript('openweathermap/javascript/chart.min.js');
 		Requirements::customScript(<<<JS
-			var ctx = document.getElementById("forecastChart").getContext("2d");
-			var data = {
-			    labels: [{$labelcsv}],
-			    datasets: [
-			        {
-			            label: "Temperature",
-			            fillColor: "rgba(220,220,220,0.2)",
-			            strokeColor: "rgba(220,220,220,1)",
-			            pointColor: "rgba(220,220,220,1)",
-			            pointStrokeColor: "#fff",
-			            pointHighlightFill: "#fff",
-			            pointHighlightStroke: "rgba(220,220,220,1)",
-			            data: [{$temperaturecsv}]
-			        }
-			    ]
-			};
-			var linechart = new Chart(ctx).Line(data,
-				{
-					showGridLines: true,
-					animation: false,
-					scaleLineWidth: 4,
-					responsive: true
-				});
+			$temperatureJS
 JS
 );
 		return $vars->renderWith('ForecastPerThreeHours');
