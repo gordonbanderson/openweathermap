@@ -26,7 +26,7 @@ class OpenWeatherMapStation extends DataObject {
 	/* Sort weather stations by name in the admin interfaces */
 	private static $default_sort = array('Name');
 
-	public function DetailedForecast($days = 5) {
+	public function DetailedForecast($days = 5, $render = true) {
 		$forecast = OpenWeatherMapAPI::detailed_forecast($this->OpenWeatherMapStationID,$days);
 		$forecasts = array();
 		$list = $forecast->list;
@@ -42,6 +42,7 @@ class OpenWeatherMapStation extends DataObject {
 		$cloudcoverdata = array();
 
 		foreach($list as $forecastdata) {
+			error_log('Iterating list for forecast data');
 			$fc = $this->json_weather_to_data_object($forecastdata);
 			if (isset($forecastdata->rain)) {
 				$fc->Rain3Hours = $forecastdata->rain->{'3h'};
@@ -57,6 +58,7 @@ class OpenWeatherMapStation extends DataObject {
 			$q = '"';
 			array_push($labels, $q.$ssdt->Format('H:i').$q);
 			array_push($temperaturedata, $q.$fc->TemperatureCurrent.$q);
+			error_log('RAIN - pushing '.$fc->Rain3Hours);
 			array_push($rainfalldata, $q.$fc->Rain3Hours.$q);
 			array_push($humiditydata, $q.$fc->Humidity.$q);
 			array_push($cloudcoverdata, $q.$fc->CloudCoverPercentage.$q);
@@ -75,6 +77,8 @@ class OpenWeatherMapStation extends DataObject {
 		$cloudcovercsv = implode(',', $cloudcoverdata);
 		$humiditycsv = implode(',', $humiditydata);
 
+		error_log($rainfallcsv);
+
 
 		// initialise variables for templates
 		$varsarray = array(
@@ -83,7 +87,8 @@ class OpenWeatherMapStation extends DataObject {
 			'Rainfall' => $rainfallcsv,
 			'Humidity' => $humiditycsv,
 			'CloudCover' => $cloudcovercsv,
-			'Forecasts' => $result
+			'Forecasts' => $result,
+			'Station' => $this
 		);
 
 		$vars = new ArrayData($varsarray);
@@ -98,19 +103,29 @@ class OpenWeatherMapStation extends DataObject {
 		$cloudhumidyJS = $vars->renderWith('CloudCoverHumidityChartJS');
 
 
-		Requirements::css('openweathermap/css/openweathermap.css');
-		Requirements::javascript('openweathermap/javascript/chart.min.js');
-		Requirements::customScript(<<<JS
+
+
+		if ($render) {
+			Requirements::css('openweathermap/css/openweathermap.css');
+			Requirements::javascript('openweathermap/javascript/chart.min.js');
+			Requirements::customScript(<<<JS
 			$temperatureJS
 			$rainfallJS
 			$cloudhumidyJS
 JS
 );
-		return $vars->renderWith('ForecastDetailed');
+			return $vars->renderWith('ForecastDetailed');
+		} else {
+			$vars->setField('ChartsJavascript', $temperatureJS."\n".$rainfallJS."\n".$cloudhumidyJS."\n");
+		}
+
+		$this->TemplateVars = $vars;
 	}
 
 
-	public function DailyForecast($days = 16) {
+
+
+	public function DailyForecast($days = 16, $render = true) {
 		$forecast = OpenWeatherMapAPI::daily_forecast($this->OpenWeatherMapStationID,$days);
 		$forecasts = array();
 		$list = $forecast->list;
@@ -126,10 +141,18 @@ JS
 
 
 		$vars = new ArrayData(array(
-			'Forecasts' => $result
+			'Forecasts' => $result,
+			'Station' => $this
 		));
-		Requirements::javascript('openweathermap/javascript/chart.min.js');
-		return $vars->renderWith('ForecastDaily');
+
+		$this->TemplateVars = $vars;
+
+
+		if ($render) {
+			Requirements::javascript('openweathermap/javascript/chart.min.js');
+			return $vars->renderWith('ForecastDaily');
+		}
+
 	}
 
 
@@ -162,18 +185,34 @@ JS
 	}
 
 
+	/**
+	 * Access current weather as an object
+	 * @return array or hash decoded JSON from API regarding current weather
+	 */
+	public function current_weather() {
+		return OpenWeatherMapAPI::current_weather($this->OpenWeatherMapStationID);
+	}
+
+
 	/*
 	Get the current weather for a station and render it using a template
+	@param boolean $render  true to render straight away or false to populate template variables
 	 */
-	public function CurrentWeather() {
+	public function CurrentWeather($render = true) {
 		$weather = OpenWeatherMapAPI::current_weather($this->OpenWeatherMapStationID);
+		$sunrisedt = new SS_Datetime();
+		$sunrisedt->setValue($weather->sys->sunrise);
+
+		$sunsetdt = new SS_Datetime();
+		$sunsetdt->setValue($weather->sys->sunset);
+
 		$vars = new ArrayData(array(
 			'Latitude' => $weather->coord->lat,
-			'Longitude' => $weather->coord->lat,
+			'Longitude' => $weather->coord->lon,
 			'Name' => $weather->name,
 			'Country' => $weather->sys->country,
-			'Sunrise' => $weather->sys->sunrise,
-			'Sunset' => $weather->sys->sunset,
+			'Sunrise' => $sunrisedt,
+			'Sunset' => $sunsetdt,
 			'WeatherDescription' => $weather->weather[0]->description,
 
 			'WeatherMain' => $weather->weather[0]->main,
@@ -187,11 +226,16 @@ JS
 			'PressureSeaLevel' => $weather->main->sea_level,
 			'PressureGroundLevel' => $weather->main->grnd_level,
 			'Humidity' => $weather->main->humidity,
-			'CloudCoverPercentage' => $weather->clouds->all
+			'CloudCoverPercentage' => $weather->clouds->all,
+			'Station' => $this
 		));
 
-		//return $weather;
-		return $vars->renderWith('CurrentWeather');
+		$this->TemplateVars = $vars;
+
+		if ($render) {
+			return $vars->renderWith('CurrentWeather');
+		}
+
 	}
 
 
