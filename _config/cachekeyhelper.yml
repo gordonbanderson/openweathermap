@@ -1,0 +1,2 @@
+CacheKeyHelper:
+  DataObject: ['OpenWeatherMapStation']
