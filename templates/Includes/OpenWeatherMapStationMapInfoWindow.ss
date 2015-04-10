@@ -1,6 +1,6 @@
 <h5>$Name</h5>
 <ul>
-<li><a href="{$Link}current/$ID">Current Weather</a></li>
-<li><a href="{$Link}shortterm/$ID">Short Term Forecast</a></li>
-<li><a href="{$Link}longterm/$ID">Long Term Forecast</a></li>
+<li><a href="{$Link}current/$URLSegment" target="_weatherstation">Current Weather</a></li>
+<li><a href="{$Link}shortterm/$URLSegment" target="_weatherstation">Short Term Forecast</a></li>
+<li><a href="{$Link}longterm/$URLSegment" target="_weatherstation">Long Term Forecast</a></li>
 </ul>
