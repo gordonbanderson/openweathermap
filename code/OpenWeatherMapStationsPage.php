@@ -13,7 +13,8 @@ class OpenWeatherMapStationsPage_Controller extends Page_Controller {
 	);
 
 	public function current() {
-		$station = DataObject::get_by_id('OpenWeatherMapStation', $this->request->param('ID'));
+		$station = OpenWeatherMapStation::get()->
+			filter('URLSegment', $this->request->param('ID'))->first();
 		$station->CurrentWeather(false);
 		$vars = $station->TemplateVars;
 		$this->Station = $station;
@@ -23,7 +24,8 @@ class OpenWeatherMapStationsPage_Controller extends Page_Controller {
 
 
 	public function shortterm() {
-		$station = DataObject::get_by_id('OpenWeatherMapStation', $this->request->param('ID'));
+		$station = OpenWeatherMapStation::get()->
+			filter('URLSegment', $this->request->param('ID'))->first();
 		$station->DetailedForecast(5,false);
 		$vars = $station->TemplateVars;
 		$this->Station = $station;
@@ -41,7 +43,8 @@ JS
 
 
 	public function longterm() {
-		$station = DataObject::get_by_id('OpenWeatherMapStation', $this->request->param('ID'));
+		$station = OpenWeatherMapStation::get()->
+			filter('URLSegment', $this->request->param('ID'))->first();
 		$station->DailyForecast(16,false);
 		$vars = $station->TemplateVars;
 		$this->Station = $station;
