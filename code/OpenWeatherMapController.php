@@ -1,9 +1,30 @@
 <?php
 
 class OpenWeatherMapController extends Controller {
-	private static $allowed_actions = array('import_country');
+	private static $allowed_actions = array('import_country', 'populate_urlsegments');
 
 
+	/**
+	 * Popoulate URLSegments after that field was introduced
+	 */
+	public function populate_urlsegments() {
+		// check access permissions, we don't want this to be public
+		$canAccess = ( Director::isDev() || Director::is_cli() || Permission::check( "ADMIN" ) );
+        if ( !$canAccess ) {
+        	return Security::permissionFailure( $this );
+        }
+
+		$stations = OpenWeatherMapStation::get();
+		foreach ($stations->getIterator() as $station) {
+			$station->write();
+			echo "SEGMENT:".$station->URLSegment."\n";
+		}
+	}
+
+
+	/**
+	 * Import countries from bulk JSON file
+	 */
 	public function import_country() {
 		// check access permissions, we don't want this to be public
 		$canAccess = ( Director::isDev() || Director::is_cli() || Permission::check( "ADMIN" ) );
