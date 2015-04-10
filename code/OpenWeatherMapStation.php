@@ -5,7 +5,8 @@ class OpenWeatherMapStation extends DataObject {
 		'Name' => 'Varchar(255)',
 		'OpenWeatherMapStationID' => 'Int',
 		'Initialised' => 'Boolean',
-		'Country' => 'Varchar(2)'
+		'Country' => 'Varchar(2)',
+		'URLSegment' => 'Varchar(255)'
 	);
 
 	private static $summary_fields = array(
@@ -16,10 +17,11 @@ class OpenWeatherMapStation extends DataObject {
 
 
 	/**
-	 * Add an index on the station id
+	 * Add an index on the station id and url segment
 	 */
 	private static $indexes = array(
-		'OpenWeatherMapStationID' => true
+		'OpenWeatherMapStationID' => true,
+		'URLSegment' => true
 	);
 
 
@@ -245,6 +247,19 @@ JS
 	public function onBeforeWrite() {
 		parent::onBeforeWrite();
 		$this->prime();
+		if (!$this->URLSegment) {
+
+			$filter = URLSegmentFilter::create();
+			$t = $filter->filter($this->Name);
+			$this->URLSegment = $t;
+
+			// Fallback to generic page name if path is empty (= no valid, convertable characters)
+			if(!$t || $t == '-' || $t == '-1') {
+				echo "Segment fallback\n";
+				$this->URLSegment = "station-$this->OpenWeatherMapStationID";
+			}
+
+		}
 	}
 
 
