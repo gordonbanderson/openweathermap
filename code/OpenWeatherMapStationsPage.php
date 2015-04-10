@@ -15,6 +15,9 @@ class OpenWeatherMapStationsPage_Controller extends Page_Controller {
 	public function current() {
 		$station = OpenWeatherMapStation::get()->
 			filter('URLSegment', $this->request->param('ID'))->first();
+		if (!$station) {
+			$this->httpError(404);
+		}
 		$station->CurrentWeather(false);
 		$vars = $station->TemplateVars;
 		$this->Station = $station;
@@ -26,6 +29,9 @@ class OpenWeatherMapStationsPage_Controller extends Page_Controller {
 	public function shortterm() {
 		$station = OpenWeatherMapStation::get()->
 			filter('URLSegment', $this->request->param('ID'))->first();
+		if (!$station) {
+			$this->httpError(404);
+		}
 		$station->DetailedForecast(5,false);
 		$vars = $station->TemplateVars;
 		$this->Station = $station;
@@ -45,6 +51,9 @@ JS
 	public function longterm() {
 		$station = OpenWeatherMapStation::get()->
 			filter('URLSegment', $this->request->param('ID'))->first();
+		if (!$station) {
+			$this->httpError(404);
+		}
 		$station->DailyForecast(16,false);
 		$vars = $station->TemplateVars;
 		$this->Station = $station;
