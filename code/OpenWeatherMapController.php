@@ -1,8 +1,48 @@
 <?php
 
 class OpenWeatherMapController extends Controller {
-	private static $allowed_actions = array('import_country', 'populate_urlsegments');
+	private static $allowed_actions = array(
+			'import_country',
+			'populate_urlsegments',
+			'add_nearby_stations'
+	);
 
+	/**
+	 Add stations near a given station.  There are more than just in the city list
+	 */
+	public function add_nearby_stations() {
+		$canAccess = ( Director::isDev() || Director::is_cli() || Permission::check( "ADMIN" ) );
+        if ( !$canAccess ) {
+        	return Security::permissionFailure( $this );
+        }
+
+        $station = OpenWeatherMapStation::get()->
+			filter('URLSegment', $this->request->param('ID'))->first();
+		if (!$station) {
+			$this->httpError(404);
+		}
+
+		$station->NearByWeatherStations(false);
+		$nearby = $station->TemplateVars->WeatherStations;
+		foreach ($nearby as $nearbystation) {
+			echo "{$nearbystation->Distance}\t{$nearbystation->Name}\n";
+			$owms = OpenWeatherMapStation::get()->filter('OpenWeatherMapStationID',
+									$nearbystation->OpenWeatherMapStationID)->first();
+			if (!$owms) {
+				echo "\tNew station\n";
+				$owms = new OpenWeatherMapStation();
+				$owms->Lat = $nearbystation->Lat;
+				$owms->Lon = $nearbystation->Lon;
+				$owms->Name = $nearbystation->Name;
+				$owms->OpenWeatherMapStationID = $nearbystation->OpenWeatherMapStationID;
+				$owms->Initialised = true;
+				$owms->write();
+
+			}
+		}
+
+
+	}
 
 	/**
 	 * Popoulate URLSegments after that field was introduced
