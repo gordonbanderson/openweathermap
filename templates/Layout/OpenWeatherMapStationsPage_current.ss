@@ -4,6 +4,7 @@
 		<h1>$Title</h1>
 		<div class="content">
  <% with $Station.TemplateVars %>
+<% include CloseWindow %>
 <h2>$Name, $Country</h2>
 <img src="$WeatherIconURL" alt="$WeatherDescription" title1="$WeatherDescription"/>
 <span class="temperature">{$TemperatureCurrent}&deg;C
