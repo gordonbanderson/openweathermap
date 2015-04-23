@@ -67,49 +67,6 @@ JS
 		$this->dataRecord->Title = $this->dataRecord->Title.' - '.$station->Name.
 			' - Long Term Forecast';
 
-
-
-		/*
-
-[0] => stdClass Object
-                (
-                    [dt] => 1429765200
-                    [temp] => stdClass Object
-                        (
-                            [day] => 24.19
-                            [min] => 21.94
-                            [max] => 26.36
-                            [night] => 22.07
-                            [eve] => 24.23
-                            [morn] => 24.19
-                        )
-
-                    [pressure] => 965.21
-                    [humidity] => 100
-                    [weather] => Array
-                        (
-                            [0] => stdClass Object
-                                (
-                                    [id] => 501
-                                    [main] => Rain
-                                    [description] => moderate rain
-                                    [icon] => 10d
-                                )
-
-                        )
-
-                    [speed] => 1.87
-                    [deg] => 124
-                    [clouds] => 92
-                    [rain] => 11.12
-                )
-
-		 */
-
-		//Requirements::css('openweathermap/css/openweathermap.css');
-		//Requirements::javascript('openweathermap/javascript/chart.min.js');
-
-
 		return array();
 	}
 
