@@ -6,12 +6,18 @@ table#upcomingWeather {
 	border: none;
 }
 
+table#upcomingWeather img {
+	padding-bottom: 4px;
+}
+
 #upcomingWeather .timeLabels td {
 	font-weight: normal;
-	font-size: 80%;
+	font-size: 70%;
 	-ms-transform: rotate(-90deg); /* IE 9 */
     -webkit-transform: rotate(-90deg); /* Chrome, Safari, Opera */
-    transform: rotate(-90deg);
+    transform: rotate(-80deg);
+    color: #777;
+    margin-left: 10px;
 }
 
 table#upcomingWeather tr th, table#upcomingWeather tr td  {
