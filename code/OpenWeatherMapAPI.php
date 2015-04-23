@@ -7,7 +7,7 @@ class OpenWeatherMapAPI {
 	 * @return {string} Configured API key for Open Weather Map
 	 */
 	private static function get_api_key() {
-		$key = Config::inst()->get('OpenWeatherMap', 'api_key');
+		$key = Config::inst()->get('OpenWeatherMap', 'API_KEY');
 		return $key;
 	}
 
@@ -29,9 +29,12 @@ class OpenWeatherMapAPI {
 	 */
 	private static function cache_friendly_json_from_url($url) {
 		$cache = self::get_cache();
-		$cachekey = hash('ripemd160',$url);
+		$apikey = self::get_api_key();
+		$apiurl = $url.'&APPID='.$apikey;
+		$cachekey = hash('ripemd160',$apiurl);
+
 		if (!($json = $cache->load($cachekey))) {
-			$json = file_get_contents($url);
+			$json = file_get_contents($apiurl);
 			$cache->save($json, $cachekey);
 			error_log("CK MISS");
 		} else {
