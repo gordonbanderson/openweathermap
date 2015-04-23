@@ -161,7 +161,7 @@ JS
 	/**
 	 * Get a list of nearby weather stations and render them using a template
 	 */
-	public function NearByWeatherStations() {
+	public function NearByWeatherStations($render = true) {
 		$nearby = OpenWeatherMapAPI::nearby_weather_stations($this->Lat,$this->Lon);
 		$stations = new ArrayList();
 
@@ -183,7 +183,12 @@ JS
 			'WeatherStations' => $stations
 		));
 
-		return $vars->renderWith('NearbyWeatherStations');
+		$this->TemplateVars = $vars;
+
+
+		if ($render) {
+			$vars->renderWith('NearbyWeatherStations');
+		}
 	}
 
 
@@ -247,8 +252,9 @@ JS
 	public function onBeforeWrite() {
 		parent::onBeforeWrite();
 		$this->prime();
-		if (!$this->URLSegment) {
 
+		// add a URL segment based on the name if one is not already present
+		if (!$this->URLSegment) {
 			$filter = URLSegmentFilter::create();
 			$t = $filter->filter($this->Name);
 			$this->URLSegment = $t;
@@ -258,7 +264,6 @@ JS
 				echo "Segment fallback\n";
 				$this->URLSegment = "station-$this->OpenWeatherMapStationID";
 			}
-
 		}
 	}
 
@@ -304,6 +309,9 @@ JS
 			$do->WindDirection = $weather->wind->deg;
 		}
 
+
+
+        // 5 day forecast
 		if (isset($weather->main)) {
 			$do->TemperatureCurrent = $weather->main->temp;
 			$do->TemperatureMin = $weather->main->temp_min;
@@ -312,7 +320,22 @@ JS
 			$do->PressureSeaLevel = $weather->main->sea_level;
 			$do->PressureGroundLevel = $weather->main->grnd_level;
 			$do->Humidity = $weather->main->humidity;
+		} else {
+			// 10 day forecast is a different format
+			$do->TemperatureMin = $weather->temp->min;
+			$do->TemperatureMax = $weather->temp->max;
+			$do->Pressure = $weather->pressure;
+			$do->Humidity = $weather->humidity;
+			$do->WindSpeed = $weather->speed;
+			$do->WindDirection = $weather->deg;
+
 		}
+
+		$ssdt = new SS_Datetime();
+		$ssdt->setValue($weather->dt);
+		$do->DateTime = $ssdt;
+
+
 
 		if (isset($weather->clouds)) {
 			// variation in data output here :(
