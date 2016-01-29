@@ -1,9 +1,9 @@
 <?php
 
-class OpenWeatherMapStationsPage extends PageWithImage {
+class OpenWeatherMapStationsPage extends Page {
 }
 
-class OpenWeatherMapStationsPage_Controller extends PageWithImage_Controller {
+class OpenWeatherMapStationsPage_Controller extends Page_Controller {
 	private static $allowed_actions = array(
 		'StationsMap',
 		'current',
