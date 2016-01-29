@@ -1,17 +1,23 @@
 {
-	"name": "weboftalent/openweathermap",
-	"description": "SilverStripe module for Open Weather Map",
-	"type": "silverstripe-module",
-	"keywords": ["silverstripe", "weather", "weather forecasts", "weather history", "weboftalent"],
-	"authors": [
-		{
-			"name": "Gordon Anderson",
-			"email": "gordon.b.anderson@gmail.com",
-			"role": "Developer"
-		}
-	],
-	"require":
-	{
-		"silverstripe/framework": "~3.1"
-	}
+  "name": "weboftalent/openweathermap",
+  "description": "SilverStripe module for Open Weather Map",
+  "type": "silverstripe-module",
+  "keywords": [
+    "silverstripe",
+    "weather",
+    "weather forecasts",
+    "weather history",
+    "weboftalent"
+  ],
+  "authors": [
+    {
+      "name": "Gordon Anderson",
+      "email": "gordon.b.anderson@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "silverstripe/framework": "~3.1"
+  },
+  "license": "BSD-3-Clause"
 }
