@@ -24,6 +24,12 @@
 		"phpunit/phpunit": "^5.7",
 		"squizlabs/php_codesniffer": "^2.3"
 	},
+	"autoload": {
+		"psr-4": {
+			"WebOfTalent\\OpenWeatherMap\\": "code/",
+			"WebOfTalent\\OpenWeatherMap\\Tests\\": "tests/"
+		}
+	},
 	"minimum-stability": "dev",
 	"prefer-stable": true,
 	"license": "BSD-3-Clause"
