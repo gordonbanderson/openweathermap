@@ -2,7 +2,7 @@
 
 use \SilverStripe\Control\Director;
 use \SilverStripe\Control\Controller;
-\SilverStripe\Security\Permission;
+use \SilverStripe\Security\Permission;
 
 class OpenWeatherMapController extends Controller {
 	private static $allowed_actions = array(

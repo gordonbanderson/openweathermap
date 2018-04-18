@@ -1,6 +1,6 @@
 <?php
 
-class OpenWeatherMapModelAdmin extends ModelAdmin {
+class OpenWeatherMapModelAdmin extends \SilverStripe\Admin\ModelAdmin {
 	/**
 	 * Managed models, here weather stations
 	 */

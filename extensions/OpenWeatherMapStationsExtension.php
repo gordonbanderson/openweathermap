@@ -2,7 +2,7 @@
 /**
  * Associate a list of weather map stations to a Page or DataObject
  */
-class OpenWeatherMapStationsExtension extends DataExtension {
+class OpenWeatherMapStationsExtension extends \SilverStripe\ORM\DataExtension {
 	private static $many_many = array(
 		'OpenWeatherMapStations' => 'OpenWeatherMapStation'
 	);

@@ -1,7 +1,7 @@
 ---
 name: weboftalent-openweathermap
-After: 'framework/*','cms/*'
 ---
-OpenWeatherMapStation:
-  extensions:
-    - MapExtension
+#@todo Mappable is not ready for SS4
+#OpenWeatherMapStation:
+#  extensions:
+#    - MapExtension

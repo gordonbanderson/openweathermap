@@ -1,6 +1,6 @@
 <?php
 
-class OpenWeatherMapStation extends DataObject {
+class OpenWeatherMapStation extends \SilverStripe\ORM\DataObject {
 	private static $db = array(
 		'Name' => 'Varchar(255)',
 		'OpenWeatherMapStationID' => 'Int',
