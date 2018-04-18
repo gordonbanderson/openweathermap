@@ -1,7 +1,7 @@
 ---
 name: weboftalent-openweathermap
-After: 'framework/*','cms/*'
 ---
-OpenWeatherMapStation:
-  extensions:
-    - MapExtension
+# @todo Mappable needs upgraded
+# OpenWeatherMapStation:
+#  extensions:
+#    - MapExtension

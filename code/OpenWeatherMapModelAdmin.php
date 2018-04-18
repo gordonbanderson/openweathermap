@@ -1,4 +1,5 @@
 <?php
+namespace WebOfTalent\OpenWeatherMap;
 
 use SilverStripe\Admin\ModelAdmin;
 

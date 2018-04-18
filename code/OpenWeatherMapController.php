@@ -1,4 +1,5 @@
 <?php
+namespace WebOfTalent\OpenWeatherMap;
 
 use SilverStripe\Control\Director;
 use SilverStripe\Security\Permission;

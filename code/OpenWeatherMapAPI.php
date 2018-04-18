@@ -1,5 +1,7 @@
 <?php
 
+namespace WebOfTalent\OpenWeatherMap;
+
 use SilverStripe\Core\Config\Config;
 
 class OpenWeatherMapAPI

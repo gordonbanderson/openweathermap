@@ -1,9 +1,10 @@
 <?php
+namespace WebOfTalent\OpenWeatherMap;
 
 use SilverStripe\View\Requirements;
 use PageController;
 
-class OpenWeatherMapStationsPage extends Page
+class OpenWeatherMapStationsPage extends \Page
 {
 }
 
