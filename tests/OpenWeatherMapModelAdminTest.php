@@ -2,5 +2,6 @@
 
 use SilverStripe\Dev\SapphireTest;
 
-class OpenWeatherMapModelAdminTest extends SapphireTest {
+class OpenWeatherMapModelAdminTest extends SapphireTest
+{
 }

@@ -1,19 +1,19 @@
 .weatherChart {
-	padding-right: 20px;
+    padding-right: 20px;
 }
 
 table#upcomingWeather {
-	border: none;
+    border: none;
 }
 
 table#upcomingWeather img {
-	padding-bottom: 4px;
+    padding-bottom: 4px;
 }
 
 #upcomingWeather .timeLabels td {
-	font-weight: normal;
-	font-size: 70%;
-	-ms-transform: rotate(-90deg); /* IE 9 */
+    font-weight: normal;
+    font-size: 70%;
+    -ms-transform: rotate(-90deg); /* IE 9 */
     -webkit-transform: rotate(-90deg); /* Chrome, Safari, Opera */
     transform: rotate(-80deg);
     color: #777;
@@ -21,11 +21,11 @@ table#upcomingWeather img {
 }
 
 table#upcomingWeather tr th, table#upcomingWeather tr td  {
-	padding: 0px;
+    padding: 0px;
 }
 
 
 table#upcomingWeather tr.even, table#upcomingWeather tr.alt, table#upcomingWeather tr:nth-of-type(even) {
-	background: none;
+    background: none;
 }
 
