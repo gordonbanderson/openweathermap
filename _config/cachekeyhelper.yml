@@ -1,2 +1,3 @@
 CacheKeyHelper:
-  DataObject: ['OpenWeatherMapStation']
+  SilverStripe\ORM\DataObject:
+    - OpenWeatherMapStation

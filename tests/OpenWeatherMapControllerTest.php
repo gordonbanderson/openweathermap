@@ -1,5 +1,7 @@
 <?php
 
+use SilverStripe\Dev\SapphireTest;
+
 class OpenWeatherMapControllerTest extends SapphireTest {
 	public function testAdd_nearby_stations() {
 		$this->markTestSkipped('TODO');

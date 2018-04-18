@@ -1,5 +1,7 @@
 <?php
 
+use SilverStripe\Dev\SapphireTest;
+
 class OpenWeatherMapAPITest extends SapphireTest {
 	public function testGet_api_key() {
 		$this->markTestSkipped('TODO');

@@ -1,5 +1,7 @@
 <?php
 
+use SilverStripe\Admin\ModelAdmin;
+
 class OpenWeatherMapModelAdmin extends ModelAdmin {
 	/**
 	 * Managed models, here weather stations

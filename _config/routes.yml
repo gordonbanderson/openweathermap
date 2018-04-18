@@ -2,6 +2,6 @@
 Name: openweathermaproutes
 After: framework/routes#coreroutes
 ---
-Director:
+SilverStripe\Control\Director:
   rules:
-    'openweathermap': 'OpenWeatherMapController'
+    openweathermap: OpenWeatherMapController

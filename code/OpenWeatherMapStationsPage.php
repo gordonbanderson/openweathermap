@@ -1,9 +1,12 @@
 <?php
 
+use SilverStripe\View\Requirements;
+use PageController;
+
 class OpenWeatherMapStationsPage extends Page {
 }
 
-class OpenWeatherMapStationsPage_Controller extends Page_Controller {
+class OpenWeatherMapStationsPage_Controller extends PageController {
 	private static $allowed_actions = array(
 		'StationsMap',
 		'current',

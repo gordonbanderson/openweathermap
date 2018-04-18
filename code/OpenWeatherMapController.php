@@ -1,5 +1,10 @@
 <?php
 
+use SilverStripe\Control\Director;
+use SilverStripe\Security\Permission;
+use SilverStripe\Security\Security;
+use SilverStripe\Control\Controller;
+
 class OpenWeatherMapController extends Controller {
 	private static $allowed_actions = array(
 			'import_country',

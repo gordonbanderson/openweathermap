@@ -1,5 +1,7 @@
 <?php
 
+use SilverStripe\Dev\SapphireTest;
+
 class OpenWeatherMapStationTest extends SapphireTest {
 	public function testDetailedForecast() {
 		$this->markTestSkipped('TODO');

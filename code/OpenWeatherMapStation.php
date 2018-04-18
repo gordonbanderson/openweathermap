@@ -1,5 +1,12 @@
 <?php
 
+use SilverStripe\ORM\ArrayList;
+use SilverStripe\ORM\FieldType\DBDatetime;
+use SilverStripe\View\ArrayData;
+use SilverStripe\View\Requirements;
+use SilverStripe\ORM\DataObject;
+use SilverStripe\View\Parsers\URLSegmentFilter;
+
 class OpenWeatherMapStation extends DataObject {
 	private static $db = array(
 		'Name' => 'Varchar(255)',
@@ -53,7 +60,7 @@ class OpenWeatherMapStation extends DataObject {
 			}
 
 			$dt = $forecastdata->dt;
-			$ssdt = new SS_Datetime();
+			$ssdt = new DBDatetime();
 			$ssdt->setValue($dt);
 			$fc->DateTime = $ssdt;
 			$result->push($fc);
@@ -207,10 +214,10 @@ JS
 	 */
 	public function CurrentWeather($render = true) {
 		$weather = OpenWeatherMapAPI::current_weather($this->OpenWeatherMapStationID);
-		$sunrisedt = new SS_Datetime();
+		$sunrisedt = new DBDatetime();
 		$sunrisedt->setValue($weather->sys->sunrise);
 
-		$sunsetdt = new SS_Datetime();
+		$sunsetdt = new DBDatetime();
 		$sunsetdt->setValue($weather->sys->sunset);
 
 		$vars = new ArrayData(array(
@@ -331,7 +338,7 @@ JS
 
 		}
 
-		$ssdt = new SS_Datetime();
+		$ssdt = new DBDatetime();
 		$ssdt->setValue($weather->dt);
 		$do->DateTime = $ssdt;
 
