@@ -19,5 +19,10 @@
   "require": {
     "silverstripe/framework": "~4"
   },
-  "license": "BSD-3-Clause"
+	"expose": [
+		"css",
+		"icons"
+	]
+	,
+	"license": "BSD-3-Clause"
 }

@@ -12,7 +12,5 @@ class OpenWeatherMapModelAdmin extends \SilverStripe\Admin\ModelAdmin {
 	/* Title of the model admin section */
 	private static $menu_title = 'Open Weather Map';
 
-	private static $menu_icon = '/openweathermap/icons/cloud310.png';
-
-
+	private static $menu_icon = 'weboftalent/openweathermap: /icons/cloud310.png';
 }
