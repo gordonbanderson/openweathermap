@@ -1,5 +1,9 @@
 <?php
 
+use \SilverStripe\Control\Director;
+use \SilverStripe\Control\Controller;
+\SilverStripe\Security\Permission;
+
 class OpenWeatherMapController extends Controller {
 	private static $allowed_actions = array(
 			'import_country',
@@ -11,7 +15,7 @@ class OpenWeatherMapController extends Controller {
 	 Add stations near a given station.  There are more than just in the city list
 	 */
 	public function add_nearby_stations() {
-		$canAccess = ( Director::isDev() || Director::is_cli() || Permission::check( "ADMIN" ) );
+		$canAccess = ( \SilverStripe\Control\Director::isDev() || Director::is_cli() || Permission::check( "ADMIN" ) );
         if ( !$canAccess ) {
         	return Security::permissionFailure( $this );
         }
