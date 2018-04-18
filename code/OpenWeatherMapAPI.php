@@ -7,8 +7,7 @@ class OpenWeatherMapAPI {
 	 * @return {string} Configured API key for Open Weather Map
 	 */
 	private static function get_api_key() {
-		$key = Config::inst()->get('OpenWeatherMap', 'API_KEY');
-		return $key;
+		return \SilverStripe\Core\Config\Config::inst()->get('WebOfTalent\OpenWeatherMap\OpenWeatherMapAPI', 'api_key');
 	}
 
 	/**
@@ -16,8 +15,7 @@ class OpenWeatherMapAPI {
 	 * @return SS_Cache SilverStripe cache object
 	 */
 	private static function get_cache() {
-		$cache = SS_Cache::factory('openweathermap');
-		return $cache;
+        return \SilverStripe\Core\Injector\Injector::inst()->get(\Psr\SimpleCache\CacheInterface::class . '.openweathermap');
 	}
 
 
@@ -33,9 +31,9 @@ class OpenWeatherMapAPI {
 		$apiurl = $url.'&APPID='.$apikey;
 		$cachekey = hash('ripemd160',$apiurl);
 
-		if (!($json = $cache->load($cachekey))) {
+		if (!($json = $cache->get($cachekey))) {
 			$json = file_get_contents($apiurl);
-			$cache->save($json, $cachekey);
+			$cache->set($cachekey, $json);
 			error_log("CK MISS");
 		} else {
 			error_log("CK HIT");

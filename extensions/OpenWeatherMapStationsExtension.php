@@ -8,7 +8,7 @@ class OpenWeatherMapStationsExtension extends \SilverStripe\ORM\DataExtension {
 	);
 
 
-	public function updateCMSFields(FieldList $fields) {
+	public function updateCMSFields(\SilverStripe\Forms\FieldList $fields) {
 		$gridConfig2 = GridFieldConfig_RelationEditor::create();
 		$gridConfig2->getComponentByType(
 			'GridFieldAddExistingAutocompleter')->
