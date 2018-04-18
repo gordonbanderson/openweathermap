@@ -32,7 +32,8 @@ For more documentation about the module see the provided documentation located
 inside the docs folder.
 
 ##Requirements
-* SilverStripe 3.1
+* SilverStripe 4*
+* For SilverStripe 3, use ~1
 
 ##TODO
 * Complete the API
