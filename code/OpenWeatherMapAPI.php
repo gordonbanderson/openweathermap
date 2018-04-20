@@ -1,6 +1,11 @@
 <?php
 
 class OpenWeatherMapAPI {
+    /** @var string Denote metric units */
+    const METRIC='metric';
+
+    /** @var string Denotes imperial units */
+    const IMPERIAL = 'imperial';
 
 	/**
 	 * Obtain the API key from configuration file
@@ -47,8 +52,8 @@ class OpenWeatherMapAPI {
 	 * @param  integer $stationid OpenWeatherMap id of station
 	 * @return struct Object decoded from JSON API representing forecasted weather
 	 */
-	public static function detailed_forecast($stationid) {
-		$url = "http://api.openweathermap.org/data/2.5/forecast?id={$stationid}&units=metric";
+	public static function detailed_forecast($stationid, $units = 'metric') {
+		$url = "http://api.openweathermap.org/data/2.5/forecast?id={$stationid}&units=" . $units;
 		// FIXME take account of the 3 hr refresh with forecasts here?
 		return self::cache_friendly_json_from_url($url);
 	}
@@ -60,9 +65,9 @@ class OpenWeatherMapAPI {
 	 * @param  integer numberOfDays Number of days to forecast, maximum of 16
 	 * @return struct Object decoded from JSON API representing forecasted weather
 	 */
-	public static function daily_forecast($stationid, $numberOfDays) {
+	public static function daily_forecast($stationid, $numberOfDays, $units = 'metric') {
 		$url = "http://api.openweathermap.org/data/2.5/forecast/daily?id={$stationid}&cnt=";
-		$url .= "{$numberOfDays}&units=metric";
+		$url .= "{$numberOfDays}&units=" . $units;
 		// FIXME take account of the 3 hr refresh with forecasts here?
 		return self::cache_friendly_json_from_url($url);
 	}
@@ -73,8 +78,8 @@ class OpenWeatherMapAPI {
 	 * @param  integer $stationid OpenWeatherMap id of station
 	 * @return struct Object decoded from JSON API representing current weather
 	 */
-	public static function current_weather($stationid) {
-		$url = "http://api.openweathermap.org/data/2.5/weather?id={$stationid}&units=metric";
+	public static function current_weather($stationid, $units = 'metric') {
+		$url = "http://api.openweathermap.org/data/2.5/weather?id={$stationid}&units=" . $units;
 		return self::cache_friendly_json_from_url($url);
 	}
 
