@@ -25,15 +25,15 @@
 
 Introductory Paragraph
  
-##Documentation
+## Documentation
 * [Installation](./docs/en/Installation.md)
 
 For more documentation about the module see the provided documentation located
 inside the docs folder.
 
-##Requirements
+## Requirements
 * SilverStripe 4*
 * For SilverStripe 3, use ~1
 
-##TODO
+## TODO
 * Complete the API
