@@ -1,2 +1,3 @@
 CacheKeyHelper:
-  DataObject: ['OpenWeatherMapStation']
+  DataObject:
+   - WebOfTalent\OpenWeatherMap\OpenWeatherMapStation
