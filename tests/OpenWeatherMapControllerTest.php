@@ -1,4 +1,6 @@
 <?php
+namespace WebOfTalent\OpenWeatherMap\Tests;
+use SilverStripe\Dev\SapphireTest;
 
 class OpenWeatherMapControllerTest extends SapphireTest {
 	public function testAdd_nearby_stations() {

@@ -1,4 +1,5 @@
 <?php
+namespace WebOfTalent\OpenWeatherMap;
 
 class OpenWeatherMapAPI {
     /** @var string Denote metric units */

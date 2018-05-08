@@ -1,4 +1,6 @@
 <?php
+namespace WebOfTalent\OpenWeatherMap\Tests;
+use SilverStripe\Dev\SapphireTest;
 
 class OpenWeatherMapAPITest extends SapphireTest {
 	public function testGet_api_key() {

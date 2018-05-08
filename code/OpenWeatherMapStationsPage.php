@@ -1,4 +1,5 @@
 <?php
+namespace WebOfTalent\OpenWeatherMap;
 
 class OpenWeatherMapStationsPage extends Page {
 }

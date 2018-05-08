@@ -1,4 +1,6 @@
 <?php
+namespace WebOfTalent\OpenWeatherMap\Tests;
+use SilverStripe\Dev\SapphireTest;
 
 class OpenWeatherMapStationsPageTest extends SapphireTest {
 	public function testCurrent() {

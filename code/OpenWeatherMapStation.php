@@ -1,4 +1,5 @@
 <?php
+namespace WebOfTalent\OpenWeatherMap;
 
 class OpenWeatherMapStation extends \SilverStripe\ORM\DataObject {
 	private static $db = array(
