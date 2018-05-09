@@ -5,7 +5,7 @@ class OpenWeatherMapModelAdmin extends \SilverStripe\Admin\ModelAdmin {
 	/**
 	 * Managed models, here weather stations
 	 */
-	private static $managed_models = array('OpenWeatherMapStation');
+	private static $managed_models = array('WebOfTalent\OpenWeatherMap\OpenWeatherMapStation');
 
 	/* URL */
 	private static $url_segment = 'openweathermap';

@@ -1,10 +1,10 @@
 <?php
 namespace WebOfTalent\OpenWeatherMap;
 
-class OpenWeatherMapStationsPage extends Page {
+class OpenWeatherMapStationsPage extends \Page {
 }
 
-class OpenWeatherMapStationsPage_Controller extends PageController {
+class OpenWeatherMapStationsPage_Controller extends \PageController {
 	private static $allowed_actions = array(
 		'StationsMap',
 		'current',
