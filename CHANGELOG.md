@@ -1,5 +1,8 @@
 # Change Log
 
+## [3.0.2](https://github.com/gordonbanderson/openweathermap/tree/3.0.2) (2018-05-08)
+[Full Changelog](https://github.com/gordonbanderson/openweathermap/compare/3.0.1...3.0.2)
+
 ## [3.0.1](https://github.com/gordonbanderson/openweathermap/tree/3.0.1) (2018-04-24)
 [Full Changelog](https://github.com/gordonbanderson/openweathermap/compare/3.0.0...3.0.1)
 
